@@ -29,7 +29,7 @@ def dropdown_handler(driver, xpath: str):
     ele = wait.until(EC.visibility_of_element_located((By.XPATH, xpath)))
     ele.location_once_scrolled_into_view
     ele.click()
-    time.sleep(0.1)
+    time.sleep(1.)
 
 
 def login(driver, userName, password, retry=0):
@@ -49,9 +49,9 @@ def login(driver, userName, password, retry=0):
     WebDriverWait(driver, 10).until(
         EC.visibility_of_element_located((By.ID, 'logon_button')))
     driver.find_element_by_id('user_name').send_keys(userName)
-    time.sleep(0.1)
+    time.sleep(1.)
     driver.find_element_by_id('password').send_keys(password)
-    time.sleep(0.1)
+    time.sleep(1.)
     driver.find_element_by_id('logon_button').click()
     try:
         WebDriverWait(driver,
@@ -68,7 +68,7 @@ def go_to_simso(driver):
     WebDriverWait(driver, 10).until(
         EC.visibility_of_element_located((By.ID, 'tag_s_stuCampusExEnReq')))
     driver.find_element_by_id('tag_s_stuCampusExEnReq').click()
-    time.sleep(2)
+    time.sleep(4)
     driver.switch_to.window(driver.window_handles[-1])
     WebDriverWait(driver, 10).until(
         EC.visibility_of_element_located((By.CLASS_NAME, 'el-card__body')))
@@ -83,12 +83,12 @@ def go_to_application_out(driver):
 
 def go_to_application_in(driver, userName, password):
     driver.back()
-    time.sleep(0.5)
+    time.sleep(2.)
     driver.back()
     try:
         WebDriverWait(driver, 10).until(
             EC.visibility_of_element_located((By.CLASS_NAME, 'el-card__body')))
-        time.sleep(0.5)
+        time.sleep(2.)
         driver.find_element_by_class_name('el-card__body').click()
         WebDriverWait(driver, 10).until(
             EC.visibility_of_element_located((By.CLASS_NAME, 'el-select')))
@@ -136,42 +136,42 @@ def write_mail_address(driver, mail_address):
     driver.find_elements_by_class_name('el-input__inner')[2].clear()
     driver.find_elements_by_class_name('el-input__inner')[2].send_keys(
         f'{mail_address}')
-    time.sleep(0.1)
+    time.sleep(1.)
 
 
 def write_phone_number(driver, phone_number):
     driver.find_elements_by_class_name('el-input__inner')[3].clear()
     driver.find_elements_by_class_name('el-input__inner')[3].send_keys(
         f'{phone_number}')
-    time.sleep(0.1)
+    time.sleep(1.)
     
     
 def write_reason_detail(driver, detail):
     driver.find_element_by_class_name('el-textarea__inner').send_keys(
         f'{detail}')
-    time.sleep(0.1)
+    time.sleep(1.)
 
 
 def write_track(driver, track):
     driver.find_elements_by_class_name('el-textarea__inner')[1].send_keys(
         f'{track}')
-    time.sleep(0.1)
+    time.sleep(1.)
 
 
 def write_street(driver, street):
     driver.find_elements_by_class_name('el-textarea__inner')[1].send_keys(
         f'{street}')
-    time.sleep(0.1)
+    time.sleep(1.)
 
 
 def click_check(driver):
     driver.find_element_by_class_name('el-checkbox__label').click()
-    time.sleep(0.1)
+    time.sleep(1.)
 
 
 def click_inPeking(driver):
     driver.find_element_by_class_name('el-radio__inner').click()
-    time.sleep(0.1)
+    time.sleep(1.)
 
 
 def submit(driver):
@@ -182,7 +182,7 @@ def submit(driver):
             (By.XPATH, '(//button/span[contains(text(),"提交")])[3]')))
     driver.find_element_by_xpath(
         '(//button/span[contains(text(),"提交")])[3]').click()
-    time.sleep(0.1)
+    time.sleep(1.)
 
 
 def fill_out(driver, campus, mail_address, phone_number, reason, detail, destination, track):

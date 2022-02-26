@@ -302,7 +302,7 @@ def exception_printer(driver, e: Exception or None):
 
 
 def run(driver, userName, password, campus, mail_address, phone_number, reason, detail, destination, track,
-        habitation, district, street, wechat, sckey):
+        habitation, district, street, wechat, sckey, retry=0):
 
     try:
         login(driver, userName, password)
@@ -316,8 +316,12 @@ def run(driver, userName, password, campus, mail_address, phone_number, reason, 
         fill_in(driver, campus, mail_address, phone_number, reason, detail, habitation, district, street)
         print('=================================')
     except Exception as e:
-        exception_printer(driver, e)
-        return
+        if retry == 5:
+            exception_printer(driver, e)
+        else:
+            run(driver_pjs, argconf.ID, argconf.PASSWORD, campus, argconf.MAIL_ADDRESS, argconf.PHONE_NUMBER, reason, detail, destination, track,
+                habitation, district, street, wechat, argconf.SENDKEY, retry + 1)
+
 
     if wechat:
         wechat_notification(userName, sckey)

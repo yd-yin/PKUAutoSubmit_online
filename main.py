@@ -319,6 +319,7 @@ def run(driver, userName, password, campus, mail_address, phone_number, reason, 
         if retry == 5:
             exception_printer(driver, e)
         else:
+            print('报备失败，重试...')
             run(driver_pjs, argconf.ID, argconf.PASSWORD, campus, argconf.MAIL_ADDRESS, argconf.PHONE_NUMBER, reason, detail, destination, track,
                 habitation, district, street, wechat, argconf.SENDKEY, retry + 1)
 

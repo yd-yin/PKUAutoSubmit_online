@@ -17,6 +17,7 @@ import sys
 import time
 import warnings
 import json
+
 warnings.filterwarnings('ignore')
 
 
@@ -29,7 +30,7 @@ def dropdown_handler(driver, xpath: str):
     ele = wait.until(EC.visibility_of_element_located((By.XPATH, xpath)))
     ele.location_once_scrolled_into_view
     ele.click()
-    time.sleep(1.)
+    time.sleep(0.1)
 
 
 def login(driver, userName, password, retry=0):
@@ -49,9 +50,9 @@ def login(driver, userName, password, retry=0):
     WebDriverWait(driver, 10).until(
         EC.visibility_of_element_located((By.ID, 'logon_button')))
     driver.find_element_by_id('user_name').send_keys(userName)
-    time.sleep(1.)
+    time.sleep(0.1)
     driver.find_element_by_id('password').send_keys(password)
-    time.sleep(1.)
+    time.sleep(0.1)
     driver.find_element_by_id('logon_button').click()
     try:
         WebDriverWait(driver,
@@ -68,7 +69,7 @@ def go_to_simso(driver):
     WebDriverWait(driver, 10).until(
         EC.visibility_of_element_located((By.ID, 'tag_s_stuCampusExEnReq')))
     driver.find_element_by_id('tag_s_stuCampusExEnReq').click()
-    time.sleep(4)
+    time.sleep(2)
     driver.switch_to.window(driver.window_handles[-1])
     WebDriverWait(driver, 10).until(
         EC.visibility_of_element_located((By.CLASS_NAME, 'el-card__body')))
@@ -83,12 +84,12 @@ def go_to_application_out(driver):
 
 def go_to_application_in(driver, userName, password):
     driver.back()
-    time.sleep(2.)
+    time.sleep(0.5)
     driver.back()
     try:
         WebDriverWait(driver, 10).until(
             EC.visibility_of_element_located((By.CLASS_NAME, 'el-card__body')))
-        time.sleep(2.)
+        time.sleep(0.5)
         driver.find_element_by_class_name('el-card__body').click()
         WebDriverWait(driver, 10).until(
             EC.visibility_of_element_located((By.CLASS_NAME, 'el-select')))
@@ -113,15 +114,15 @@ def select_campus(driver, campus):
     driver.find_elements_by_class_name('el-select')[1].click()
     dropdown_handler(driver, f'//li/span[text()="{campus}"]')
 
-    
+
 def write_reason(driver, reason):
     driver.find_elements_by_class_name('el-select')[2].click()
     WebDriverWait(driver, 10).until(
         EC.visibility_of_element_located(
             (By.XPATH, f'//li/span[text()="{reason}"]')))
     driver.find_element_by_xpath(f'//li/span[text()="{reason}"]').click()
-    
-    
+
+
 def select_destination(driver, destination):
     driver.find_elements_by_class_name('el-select')[3].click()
     dropdown_handler(driver, f'//li/span[text()="{destination}"]')
@@ -136,42 +137,42 @@ def write_mail_address(driver, mail_address):
     driver.find_elements_by_class_name('el-input__inner')[2].clear()
     driver.find_elements_by_class_name('el-input__inner')[2].send_keys(
         f'{mail_address}')
-    time.sleep(1.)
+    time.sleep(0.1)
 
 
 def write_phone_number(driver, phone_number):
     driver.find_elements_by_class_name('el-input__inner')[3].clear()
     driver.find_elements_by_class_name('el-input__inner')[3].send_keys(
         f'{phone_number}')
-    time.sleep(1.)
-    
-    
+    time.sleep(0.1)
+
+
 def write_reason_detail(driver, detail):
     driver.find_element_by_class_name('el-textarea__inner').send_keys(
         f'{detail}')
-    time.sleep(1.)
+    time.sleep(0.1)
 
 
 def write_track(driver, track):
     driver.find_elements_by_class_name('el-textarea__inner')[1].send_keys(
         f'{track}')
-    time.sleep(1.)
+    time.sleep(0.1)
 
 
 def write_street(driver, street):
     driver.find_elements_by_class_name('el-textarea__inner')[1].send_keys(
         f'{street}')
-    time.sleep(1.)
+    time.sleep(0.1)
 
 
 def click_check(driver):
     driver.find_element_by_class_name('el-checkbox__label').click()
-    time.sleep(1.)
+    time.sleep(0.1)
 
 
 def click_inPeking(driver):
     driver.find_element_by_class_name('el-radio__inner').click()
-    time.sleep(1.)
+    time.sleep(0.1)
 
 
 def submit(driver):
@@ -182,96 +183,59 @@ def submit(driver):
             (By.XPATH, '(//button/span[contains(text(),"提交")])[3]')))
     driver.find_element_by_xpath(
         '(//button/span[contains(text(),"提交")])[3]').click()
-    time.sleep(1.)
+    time.sleep(0.1)
 
 
 def fill_out(driver, campus, mail_address, phone_number, reason, detail, destination, track):
     print('开始填报出校备案')
-
     print('选择出校/入校    ', end='')
     select_in_out(driver, '出校')
-    print('Done')
-
     print('选择校区    ', end='')
     select_campus(driver, campus)
-    print('Done')
-
     print('填写邮箱    ', end='')
     write_mail_address(driver, mail_address)
-    print('Done')
-
     print('填写手机号    ', end='')
     write_phone_number(driver, phone_number)
-    print('Done')
-
     print('填写出入校事由    ', end='')
     write_reason(driver, reason)
-    print('Done')
-    
     print('填写出入校事由详细描述    ', end='')
     write_reason_detail(driver, detail)
-    print('Done')
-
     print('选择出校目的地    ', end='')
     select_destination(driver, destination)
-    print('Done')
-
     print('填写出校行动轨迹    ', end='')
     write_track(driver, track)
-    print('Done')
-
     click_check(driver)
     submit(driver)
-
     print('出校备案填报完毕！')
 
 
 def fill_in(driver, campus, mail_address, phone_number, reason, detail, habitation, district, street):
     print('开始填报入校备案')
-
     print('选择出校/入校    ', end='')
     select_in_out(driver, '入校')
-    print('Done')
-
     print('选择校区    ', end='')
     select_campus(driver, campus)
-    print('Done')
-
     print('填写邮箱    ', end='')
     write_mail_address(driver, mail_address)
-    print('Done')
-
     print('填写手机号    ', end='')
     write_phone_number(driver, phone_number)
-    print('Done')
-
     print('填写出入校事由    ', end='')
     write_reason(driver, reason)
-    print('Done')
-    
     print('填写出入校事由详细描述    ', end='')
     write_reason_detail(driver, detail)
-    print('Done')
-
     if habitation != '北京':
         raise Exception('暂不支持京外入校备案，请手动填写')
-
     print('选择居住地所在区    ', end='')
     select_district(driver, district)
-    print('Done')
-
     print('填写居住地所在街道    ', end='')
     write_street(driver, street)
-    print('Done')
-
     click_inPeking(driver)
     click_check(driver)
     submit(driver)
-
     print('入校备案填报完毕！')
 
 
-def wechat_notification(userName, sckey):
+def wechat_notification_success(userName, sckey):
     with request.urlopen(
             quote('https://sctapi.ftqq.com/' + sckey + '.send?title=成功报备&desp=学号' +
                   str(userName) + '成功报备',
@@ -279,22 +243,17 @@ def wechat_notification(userName, sckey):
         response = json.loads(response.read().decode('utf-8'))
 
 
-def exception_printer(driver, e: Exception or None):
-    exception_text = []
-    try:
-        # lookup error message on the page
-        exception_text.append(driver.find_element_by_class_name('el-form-item__error').text)
-    except NoSuchElementException:
-        pass
+def wechat_notification_failed(userName, sckey):
+    with request.urlopen(
+            quote('https://sctapi.ftqq.com/' + sckey + '.send?title=[请注意]报备失败&desp=学号' +
+                  str(userName) + '报备失败，需要您手动报备或在github页面手动重新运行，您可以在主仓库issue下报告错误日志。',
+                  safe='/:?=&')) as response:
+        response = json.loads(response.read().decode('utf-8'))
 
-    # print error message
+
+def exception_printer(e: Exception or None):
     print_bold = lambda x: print('\033[1;31m' + x + '\033[0m', file=sys.stderr)
-    print_bold('备案发生错误：')
-    if len(exception_text) > 0:
-        for text in exception_text:
-            # print with bold
-            print_bold(text)
-
+    print_bold("多次重试失败，报备失败")
     print_bold('请检查您的配置是否正确，或者稍后重试')
     print_bold('如果错误依然存在，请在这里汇报Bug：https://github.com/xiazhongyv/PKUAutoSubmit_online/issues')
     print_bold('错误详细信息：')
@@ -302,49 +261,31 @@ def exception_printer(driver, e: Exception or None):
 
 
 def run(driver, userName, password, campus, mail_address, phone_number, reason, detail, destination, track,
-        habitation, district, street, wechat, sckey, retry=0):
+        habitation, district, street, wechat, sckey):
 
-    try:
-        login(driver, userName, password)
-        print('=================================')
+    for try_times in range(5):
+        try:
+            print("======= 第", try_times + 1, "次报备尝试 =======")
+            login(driver, userName, password)
+            go_to_application_out(driver)
+            fill_out(driver, campus, mail_address, phone_number, reason, detail, destination, track)
+            go_to_application_in(driver, userName, password)
+            fill_in(driver, campus, mail_address, phone_number, reason, detail, habitation, district, street)
+            print('\n报备成功')
+            break
 
-        go_to_application_out(driver)
-        fill_out(driver, campus, mail_address, phone_number, reason, detail, destination, track)
-        print('=================================')
-
-        go_to_application_in(driver, userName, password)
-        fill_in(driver, campus, mail_address, phone_number, reason, detail, habitation, district, street)
-        print('=================================')
-        print('报备成功！\n')
-    except Exception as e:
-        if retry == 5:
-            exception_printer(driver, e)
-        else:
-            print('报备失败，重试...')
-            print('=================================')
-            run(driver_pjs, argconf.ID, argconf.PASSWORD, campus, argconf.MAIL_ADDRESS, argconf.PHONE_NUMBER, reason, detail, destination, track,
-                habitation, district, street, wechat, argconf.SENDKEY, retry + 1)
-
+        except Exception as e:
+            print("\n报备失败")
+            if try_times == 4:
+                if wechat:
+                    wechat_notification_failed(userName, sckey)
+                exception_printer(e)
 
     if wechat:
-        wechat_notification(userName, sckey)
-
-
-def go(config):
-    conf = ConfigParser()
-    conf.read(config, encoding='utf8')
-
-    campus, reason, detail = dict(conf['common']).values()
-    destination, track = dict(conf['out']).values()
-    habitation, district, street = dict(conf['in']).values()
-    wechat = conf.getboolean('wechat', '是否需要微信通知')
-
-    run(driver_pjs, argconf.ID, argconf.PASSWORD, campus, argconf.MAIL_ADDRESS, argconf.PHONE_NUMBER, reason, detail, destination, track,
-        habitation, district, street, wechat, argconf.SENDKEY)
+        wechat_notification_success(userName, sckey)
 
 
 if __name__ == '__main__':
-
     parser = ArgumentParser()
     parser.add_argument('--ID', type=str)
     parser.add_argument('--PASSWORD', type=str)
@@ -356,11 +297,20 @@ if __name__ == '__main__':
     chrome_options = Options()
     chrome_options.add_argument("--headless")
     driver_pjs = webdriver.Edge(
-            options=chrome_options,
-            executable_path='/usr/bin/chromedriver',
-            service_args=['--ignore-ssl-errors=true', '--ssl-protocol=TLSv1'])
+        options=chrome_options,
+        executable_path='/usr/bin/chromedriver',
+        service_args=['--ignore-ssl-errors=true', '--ssl-protocol=TLSv1'])
     print('Driver Launched\n')
 
-    go('config.ini')
+    conf = ConfigParser()
+    conf.read("config.ini", encoding='utf8')
+
+    campus, reason, detail = dict(conf['common']).values()
+    destination, track = dict(conf['out']).values()
+    habitation, district, street = dict(conf['in']).values()
+    wechat = conf.getboolean('wechat', '是否需要微信通知')
+
+    run(driver_pjs, argconf.ID, argconf.PASSWORD, campus, argconf.MAIL_ADDRESS, argconf.PHONE_NUMBER, reason, detail,
+        destination, track, habitation, district, street, wechat, argconf.SENDKEY)
 
     driver_pjs.quit()

@@ -315,11 +315,13 @@ def run(driver, userName, password, campus, mail_address, phone_number, reason, 
         go_to_application_in(driver, userName, password)
         fill_in(driver, campus, mail_address, phone_number, reason, detail, habitation, district, street)
         print('=================================')
+        print('报备成功！\n')
     except Exception as e:
         if retry == 5:
             exception_printer(driver, e)
         else:
             print('报备失败，重试...')
+            print('=================================')
             run(driver_pjs, argconf.ID, argconf.PASSWORD, campus, argconf.MAIL_ADDRESS, argconf.PHONE_NUMBER, reason, detail, destination, track,
                 habitation, district, street, wechat, argconf.SENDKEY, retry + 1)
 
@@ -327,7 +329,6 @@ def run(driver, userName, password, campus, mail_address, phone_number, reason, 
     if wechat:
         wechat_notification(userName, sckey)
 
-    print('报备成功！\n')
 
 def go(config):
     conf = ConfigParser()
